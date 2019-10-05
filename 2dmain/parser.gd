@@ -36,6 +36,12 @@ func process_resp(resp):
         print("TYPE: Identification")
         client_id = get_user_id(buf)
         print("Your id: ", client_id)
+    elif msg_type == TYPE.removePlayer_s:
+        print("TYPE: removePlayer")
+        var array = Array()
+        while (buf.get_available_bytes() > 0):
+            array.append(get_user_id(buf))
+        remove_players(array)
         
 func update_user_coordinates(dict):
     var parent = get_parent()    
@@ -55,6 +61,13 @@ func update_user_action(dict):
         if player != null:
             player.setAction(dict[key])
 
+func remove_players(array):
+    var parent = get_parent()    
+    var players = parent.get_node("Players")
+    for pl in array:
+        var player = players.get_node_or_null(str(pl))
+        if player != null:
+            players.remove_child(player)
 
 func get_user_id(buf):
     return buf.get_16()
