@@ -15,13 +15,31 @@ func _input(event):
     if event is InputEventMouseButton:
         if event.pressed:
             print("button was clicked at ", event.position , event.button_index)            
-            _client.send_raw_data(event.position)
             
             if event.button_index == BUTTON_MIDDLE:
               instantiatePlayer(event.position)
             if event.button_index == BUTTON_RIGHT:
               randomizePlayerTargets()
             
+            var buf = StreamPeerBuffer.new()
+            var x = event.position.x
+            var y = event.position.y
+            buf.put_8(Parser.TYPE.action)
+            buf.put_16(x)
+            buf.put_16(y)
+            buf.put_8(event.button_index)
+            print("button was clicked at ", x, " ", y, " ", event.button_index)
+            _client.send_raw_data(buf.data_array)
+    if event is InputEventMouseMotion:
+            var buf = StreamPeerBuffer.new()
+            var x = event.position.x
+            var y = event.position.y
+            buf.put_8(Parser.TYPE.location)
+            buf.put_16(x)
+            buf.put_16(y)
+            _client.send_raw_data(buf.data_array)
+
+
 func instantiatePlayer(pos):
   var p = Player.instance()
   p._init(pos)
