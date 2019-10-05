@@ -25,7 +25,7 @@ func _input(event):
             var buf = StreamPeerBuffer.new()
             var x = event.position.x
             var y = event.position.y
-            buf.put_8(_parser.TYPE.action)
+            buf.put_8(_parser.TYPE.action_c)
             buf.put_16(x)
             buf.put_16(y)
             buf.put_8(event.button_index)
@@ -35,7 +35,7 @@ func _input(event):
             var buf = StreamPeerBuffer.new()
             var x = event.position.x
             var y = event.position.y
-            buf.put_8(_parser.TYPE.location)
+            buf.put_8(_parser.TYPE.location_c)
             buf.put_16(x)
             buf.put_16(y)
             _client.send_raw_data(buf.data_array)
