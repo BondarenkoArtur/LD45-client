@@ -2,7 +2,7 @@ extends Node
 
 onready var _client = get_node("WSClient")
 onready var _host = get_node("LineEdit")
-
+onready var Player = preload("res://src/Player.tscn")
 
 func _ready():
     pass # Replace with function body.
@@ -16,6 +16,24 @@ func _input(event):
         if event.pressed:
             print("button was clicked at ", event.position , event.button_index)            
             _client.send_raw_data(event.position)
+            
+            if event.button_index == BUTTON_MIDDLE:
+              instantiatePlayer(event.position)
+            if event.button_index == BUTTON_RIGHT:
+              randomizePlayerTargets()
+            
+func instantiatePlayer(pos):
+  var p = Player.instance()
+  p._init(pos)
+  get_node("Players").add_child(p)
+  
+func randomizePlayerTargets():
+  var players = get_node("Players");
+  for i in range(0, players.get_child_count()):
+    var newPos = Vector2(rand_range(0, 600), rand_range(0, 360))
+    var player = players.get_child(i);
+    ##var script = player.get_script()
+    player.targetPos = newPos;
 
 func _on_Button_toggled(button_pressed):
     if button_pressed:
