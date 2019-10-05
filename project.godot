@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Utils="*res://utils.gd"
+Parser="*res://parser.gd"
 
 [display]
 

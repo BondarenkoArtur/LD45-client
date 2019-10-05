@@ -48,7 +48,10 @@ func _client_received(p_id = 1):
     else:
         var packet = _client.get_peer(1).get_packet()
         var is_string = _client.get_peer(1).was_string_packet()
-        print("Received data. BINARY: %s: %s" % [not is_string, Utils.decode_data(packet, is_string)])
+        if is_string:
+            print("Received data. BINARY: %s: %s" % [not is_string, Utils.decode_data(packet, is_string)])
+        else:
+            Parser.process_resp(packet)
 
 func connect_to_url(host, protocols, multiplayer):
     _use_multiplayer = multiplayer
@@ -68,8 +71,9 @@ func send_data(data, dest):
         _client.get_peer(1).put_packet(Utils.encode_data(data, _write_mode))
         
 func send_raw_data(data):
-    _client.get_peer(1).set_write_mode(_write_mode)
-    _client.get_peer(1).put_var(data)
+    if _client.get_connection_status() == _client.CONNECTION_CONNECTED:
+        _client.get_peer(1).set_write_mode(_write_mode)
+        _client.get_peer(1).put_packet(data)
 
 func set_write_mode(mode):
     _write_mode = mode
