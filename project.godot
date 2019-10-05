@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="LD45 WS"
-run/main_scene="res://mainframe/mainframe.tscn"
+run/main_scene="res://2dmain/2dmain.tscn"
 config/icon="res://icon.png"
 
 [autoload]
