@@ -1,9 +1,14 @@
 extends Node
 
+var Parser = null
+
 var _client = WebSocketClient.new()
 var _write_mode = WebSocketPeer.WRITE_MODE_BINARY
 var _use_multiplayer = false
 var last_connected_client = 0
+
+func set_parser(parser):
+    Parser = parser
 
 func _init():
     _client.connect("connection_established", self, "_client_connected")

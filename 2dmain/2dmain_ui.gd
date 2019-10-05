@@ -2,10 +2,11 @@ extends Node
 
 onready var _client = get_node("WSClient")
 onready var _host = get_node("LineEdit")
+onready var _parser = get_node("Parser")
 onready var Player = preload("res://src/Player.tscn")
 
 func _ready():
-    pass # Replace with function body.
+    _client.set_parser(_parser)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -17,14 +18,14 @@ func _input(event):
             print("button was clicked at ", event.position , event.button_index)            
             
             if event.button_index == BUTTON_MIDDLE:
-              instantiatePlayer(event.position)
+              instantiatePlayer(event.position, 0)
             if event.button_index == BUTTON_RIGHT:
               randomizePlayerTargets()
             
             var buf = StreamPeerBuffer.new()
             var x = event.position.x
             var y = event.position.y
-            buf.put_8(Parser.TYPE.action)
+            buf.put_8(_parser.TYPE.action)
             buf.put_16(x)
             buf.put_16(y)
             buf.put_8(event.button_index)
@@ -34,17 +35,19 @@ func _input(event):
             var buf = StreamPeerBuffer.new()
             var x = event.position.x
             var y = event.position.y
-            buf.put_8(Parser.TYPE.location)
+            buf.put_8(_parser.TYPE.location)
             buf.put_16(x)
             buf.put_16(y)
             _client.send_raw_data(buf.data_array)
 
 
-func instantiatePlayer(pos):
+func instantiatePlayer(pos, id):
   var p = Player.instance()
   p._init(pos)
+  p.id = id
+  p.name = str(id)
   get_node("Players").add_child(p)
-  
+
 func randomizePlayerTargets():
   var players = get_node("Players");
   for i in range(0, players.get_child_count()):
