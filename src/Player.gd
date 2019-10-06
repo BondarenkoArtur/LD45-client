@@ -1,7 +1,7 @@
-extends Node2D
+extends KinematicBody2D
 
 var targetPos = position
-var speed = 150
+var speed = 5000
 
 var id
 
@@ -19,10 +19,11 @@ func updatePosition(delta):
     var distance2 = position.distance_squared_to(targetPos)
     if distance2 > pow(delta * speed, 2):
       var dir = position.direction_to(targetPos);
-      position.x += dir.x * delta * speed
-      position.y += dir.y * delta * speed
+      var positionx = dir.x * delta * speed
+      var positiony = dir.y * delta * speed
+      move_and_collide(Vector2(positionx, positiony))
     else:
-      set_position(targetPos)
+      move_and_collide(Vector2(targetPos.x - position.x, targetPos.y - position.y))
 
 func setAction(action):
     # Mouse buttons might be 1, 2, 3, 4, 5, 8, 9

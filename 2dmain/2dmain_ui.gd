@@ -17,10 +17,10 @@ func _input(event):
         if event.pressed:
             print("button was clicked at ", event.position , event.button_index)            
             
-            if event.button_index == BUTTON_MIDDLE:
-              instantiatePlayer(event.position, 0)
-            if event.button_index == BUTTON_RIGHT:
-              randomizePlayerTargets()
+#            if event.button_index == BUTTON_MIDDLE:
+#              instantiatePlayer(event.position, 0)
+#            if event.button_index == BUTTON_RIGHT:
+#              randomizePlayerTargets()
             
             var buf = StreamPeerBuffer.new()
             var x = event.position.x

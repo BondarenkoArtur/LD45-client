@@ -29,7 +29,7 @@ func process_resp(resp):
         while (buf.get_available_bytes() > 0):
             var user_id = get_user_id(buf)
             dict[user_id] = Vector2(buf.get_16(), buf.get_16())
-            dict_btn[user_id] = buf.get_8()      
+            dict_btn[user_id] = buf.get_8()
         update_user_coordinates(dict)
         update_user_action(dict_btn)
     elif msg_type == TYPE.identification_s:
